@@ -270,7 +270,7 @@ proc collectData {iArray dArray oArray fileList} {
 		if {$opts(errors)} {
 		    error $::errorInfo
 		} else {
-		    puts stderr $patchlevel
+		    puts stderr $output
 		    continue
 		}
 	    }
