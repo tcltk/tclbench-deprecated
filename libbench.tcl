@@ -177,7 +177,12 @@ set BENCH(ERRORS)	1
 set BENCH(MATCH)	{}
 set BENCH(OUTFILE)	stdout
 set BENCH(FILES)	{}
-set BENCH(ITERS)	1000
+if {[info tclversion] < 8.0} {
+    # poor 7.x just takes too long otherwise...
+    set BENCH(ITERS)	500
+} else {
+    set BENCH(ITERS)	1000
+}
 
 if {[llength $argv]} {
     while {[llength $argv]} {
