@@ -1,5 +1,9 @@
+#
+# RCS: @(#) $Id$
+#
+
 if { [catch {string map {a b} "abc"}] } {
-    proc map-str {str nocase args} { return -code 666 "(8.2+)" }
+    proc map-str {str nocase args} { return -code 666 "nomap" }
 } else {
     proc map-str {str nocase mapChars} {
 	if {[string equal "-nocase" $nocase]} {
