@@ -19,7 +19,9 @@ proc regexp-str-static {string} {
 
 # Variable based regexp with catching
 proc regexp-catch {string exp} {
-    regexp $exp $string match one two three
+    if {[regexp $exp $string match one two three]} {
+	list $match $one $two $three   
+    }
 }
 
 if { [catch {regexp -all "abc" "abc"}] } {
