@@ -120,13 +120,13 @@ proc normalize-text {norm line} {
     }
     set times [string range $line $start end]
     set ntime [lindex $times $col]
-    if {![string is double -strict $ntime]} {
+    if {![string is double -strict $ntime] || $ntime == 0} {
 	# This didn't return valid data.  Try walking backwards to find
 	# a newer version that we can normalize this row on, since newer
 	# versions are to the left.
 	for {set i $col} {$i >= 0} {incr i -1} {
 	    set ntime [lindex $times $i]
-	    if {[string is double -strict $ntime]} { break }
+	    if {[string is double -strict $ntime] && $ntime} { break }
 	}
 	# Hmph.  No usable data.
 	if {$i == -1} { return $line }
