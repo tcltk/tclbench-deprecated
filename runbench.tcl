@@ -63,8 +63,8 @@ array set opts {
     rmatch	{}
     tcllist	{}
     tklist	{}
-    tclsh	"tclsh?*"
-    wish	"wish?*"
+    tclsh	"tclsh*"
+    wish	"wish*"
     usetk	1
     usetcl	1
     usethreads	0
