@@ -234,9 +234,9 @@ foreach len  {10  100 1000 10000} \
     bench -desc "BASE64 encode $len" -iter $iter \
 	    -body {base64::encode $str}
     bench -desc "BASE64 encode2 $len" -iter $iter \
-	    -body {base64::encode2 $str}
+	    -body {base64::encode2 $str} -result $encstr
     bench -desc "BASE64 decode $len" -iter $iter  \
-	    -body {base64::decode $encstr}
+	    -body {base64::decode $encstr} -result $str
     bench -desc "BASE64 decode2 $len" -iter $iter  \
-	    -body {base64::decode2 $encstr}
+	    -body {base64::decode2 $encstr} -result $str
 }
