@@ -69,9 +69,10 @@ array set opts {
     errors	0
     verbose	0
     output	text
-    iters	2000
+    iters	1000
     norm	{}
 }
+
 if {[llength $argv]} {
     while {[llength $argv]} {
 	set key [lindex $argv 0]
