@@ -40,7 +40,8 @@ proc makeFile {file order} {
     close $outfid
 }
 
-set ::BOUND "-----NEXT_PART_[clock seconds].[pid]"
+# ensure the BOUND will have consistent size between runs
+set ::BOUND [format "-----NEXT_PART_%012ld.%05ld" [clock sec] [pid]]
 set ::SCRIPT [info script]
 set ::LARGEFILE [bench_tmpfile].lrg
 set ::SMALLFILE [bench_tmpfile].sml
