@@ -140,7 +140,7 @@ proc normalize-text {norm line} {
 	    append out [format " %7s" $t]
 	}
     }
-    return $out 
+    return $out
 }
 
 proc normalize-list {norm line} {
@@ -163,14 +163,15 @@ proc normalize-list {norm line} {
 		lappend out $t
 	    }
 	}
-	return $out 
+	return $out
     }
 }
 
 proc normalize {norm indata} {
     set lines [split $indata \n]
     foreach line $lines {
-	if {![string match "\[0-9\]*" $line]} {
+	if {![string match {[0-9]*} $line] \
+		|| [string match {*milliseconds} $line]} {
 	    puts stdout $line
 	    continue
 	}
