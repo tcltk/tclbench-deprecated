@@ -89,6 +89,14 @@ if {[llength $argv]} {
 		set opts(usethreads) [lindex $argv 1]
 		set argv [lreplace $argv 0 1]
 	    }
+	    -globt*	{
+		set opts(tclsh) [lindex $argv 1]
+		set argv [lreplace $argv 0 1]
+	    }
+	    -globw*	{
+		set opts(wish) [lindex $argv 1]
+		set argv [lreplace $argv 0 1]
+	    }
 	    -iter*	{
 		# Maximum iters to run a test
 		# The test may set a smaller iter run, but anything larger
@@ -190,6 +198,18 @@ proc getInterps {optArray pattern iArray} {
     upvar 1 $optArray opts $iArray var
     foreach path $opts(paths) {
 	foreach interp [glob -nocomplain [file join $path $pattern]] {
+	    if {$::tcl_version > 8.4} {
+		set interp [file normalize $interp]
+	    }
+	    # Root out the soft-linked exes
+	    while {[string equal link [file type $interp]]} {
+		set link [file readlink $interp]
+		if {[string match relative [file pathtype $link]]} {
+		    set interp [file join [file dirname $interp] $link]
+		} else {
+		    set interp $link
+		}
+	    }
 	    if {[file executable $interp] && ![info exists var($interp)]} {
 		if {[catch {exec echo "puts \[info patchlevel\] ; exit" | \
 			$interp} patchlevel]} {
