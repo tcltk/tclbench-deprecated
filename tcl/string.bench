@@ -284,6 +284,12 @@ bench -desc "STR first (failure)" \
 	-body {str-first $longString cba}
 bench -desc "STR first (total failure)" \
 	-body {str-first $longString ===}
+bench -desc "STR first (success) utf" \
+	-body {str-first $ustring "\374ab"}
+bench -desc "STR first (failure) utf" \
+	-body {str-first $ustring "\373cba"}
+bench -desc "STR first (total failure) utf" \
+	-body {str-first $ustring ===}
 
 bench -desc "STR last (success)" \
 	-body {str-last $longString 901}
