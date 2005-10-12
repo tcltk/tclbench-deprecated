@@ -745,9 +745,11 @@ if {[info commands bench] == ""} {
         interp alias {} ::sha1::SHA1Transform {} ::sha1::SHA1TransformA
 	bench -desc "SHA (A) msg len $len" -iter $iter \
 		-body {::sha1::sha1 $str}
+if {![package vsatisfies [package provide Tcl] 8.5]} {
         interp alias {} ::sha1::SHA1Transform {} ::sha1::SHA1TransformB
 	bench -desc "SHA (B) msg len $len" -iter $iter  \
 		-body {::sha1::sha1 $str}
+}
     }
 }
 
