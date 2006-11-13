@@ -18,7 +18,9 @@
 #
 # $Id$
 
-package require Tcl 8.2;                # tcl minimum version
+if {[catch {package require Tcl 8.2}]} { # tcl minimum version
+    return
+}
 
 namespace eval ::md5 {
     variable version 2.0.4
