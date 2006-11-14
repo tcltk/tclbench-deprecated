@@ -357,7 +357,7 @@ proc outputData-text-item {val} {
     set LEN 8
     if {[string is double -strict $val]} {
 	if {$val > 1e6} {
-	    return [format " %8d" $val]
+	    return [format " %8.0f" $val]
 	} elseif {$val > 1e5} {
 	    return [format " %8.1f" $val]
 	} else {
