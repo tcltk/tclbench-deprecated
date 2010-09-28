@@ -1,6 +1,4 @@
-#!/bin/sh
-# The next line is executed by /bin/sh, but not tcl \
-exec tclsh "$0" ${1+"$@"}
+#!/usr/bin/env tclsh
 
 # runbench.tcl ?options?
 #
@@ -26,6 +24,7 @@ proc usage {} {
     puts stderr "Usage (v$::VERSION): $::ME ?options?\
 	    \n\t-help			# print out this message\
 	    \n\t-delta			# delta range for wiki highlight (default: 0.05)\
+	    \n\t-autoscale <bool>	# autoscale runtime iters to 0.1s..4s (default on)\
 	    \n\t-iterations <#>		# max # of iterations to run any benchmark\
 	    \n\t-minversion <version>	# minimum interp version to use\
 	    \n\t-maxversion <version>	# maximum interp version to use\
@@ -73,7 +72,8 @@ array set opts {
     errors	0
     verbose	0
     output	text
-    iters	1000
+    iters	5000
+    autoscale	1
     norm	{}
 }
 
@@ -97,6 +97,10 @@ if {[llength $argv]} {
 	    }
 	    -globw*	{
 		set opts(wish) [lindex $argv 1]
+		set argv [lreplace $argv 0 1]
+	    }
+	    -auto*	{
+		set opts(autoscale) [lindex $argv 1]
 		set argv [lreplace $argv 0 1]
 	    }
 	    -iter*	{
@@ -303,6 +307,7 @@ proc collectData {iArray dArray oArray fileList} {
 	set cmd [list $interp [file join $::MYDIR libbench.tcl] \
 		-match $opts(match) \
 		-rmatch $opts(rmatch) \
+		-autos $opts(autoscale) \
 		-iters $opts(iters) \
 		-interp $interp \
 		-errors $opts(errors) \
