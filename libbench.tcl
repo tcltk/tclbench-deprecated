@@ -28,7 +28,7 @@ global BENCH bench
 proc bench_tmpfile {} {
     global tcl_platform env BENCH
     if {![info exists BENCH(uniqid)]} { set BENCH(uniqid) 0 }
-    set base "tclbench[incr BENCH(uniqid)].dat"
+    set base "tclbench[pid][incr BENCH(uniqid)].dat"
     if {[info exists tcl_platform(platform)]} {
 	if {$tcl_platform(platform) == "unix"} {
 	    return "/tmp/$base"
@@ -153,11 +153,15 @@ proc bench {args} {
 		# time reports in microsecs.
 		# Do 2nd call to remove catch variance
 		set runtime [lindex [uplevel \#0 [list time $opts(-body) 1]] 0]
-		if {$runtime*$iter < 100000} {
-		    set iter [expr {int(100000.0/$runtime)}]
-		} elseif {($runtime*$iter/1000.) > 5000} {
-		    set iter [expr {int(4000000.0/$runtime)}]
-		    if {$iter < 8} { set iter 8 }
+		if {$runtime} {
+		    # Guard against 0 runtimes which can happen on fast
+		    # machines with older (pre-nanosecond) time cmd
+		    if {$runtime*$iter < 100000} {
+			set iter [expr {int(100000.0/$runtime)}]
+		    } elseif {($runtime*$iter/1000.) > 5000} {
+			set iter [expr {int(4000000.0/$runtime)}]
+			if {$iter < 8} { set iter 8 }
+		    }
 		}
 	    }
 	    set code [catch {uplevel \#0 [list time $opts(-body) $iter]} res]
