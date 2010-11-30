@@ -21,12 +21,12 @@ proc makeHash {var Mlst Nlst} {
 
 set N 50
 set Nlst [genKeys $N]
-bench -desc "ARRAY genKeys $N" -iter 100 \
+bench -desc "ARRAY format genKeys $N" -iter 100 \
 	-body {genKeys $N}
 
 set M 500
 set Mlst [genKeys $M]
-bench -desc "ARRAY genKeys $M" -iter 50 \
+bench -desc "ARRAY format genKeys $M" -iter 50 \
 	-body {genKeys $M}
 
 catch {unset hash}
