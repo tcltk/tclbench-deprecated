@@ -402,6 +402,9 @@ if {$BENCH(THREADS)} {
     foreach desc [array names bench] {
 	puts $BENCH(OUTFID) [list $desc $bench($desc)]
     }
+    if {[llength [info commands evalstats]]} {
+	puts stdout [list ZZZ_STATS [evalstats]]
+    }
 
     if {$BENCH(EXIT)} {
 	exit.true ; # needed for Tk tests
