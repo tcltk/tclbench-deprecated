@@ -207,10 +207,6 @@ proc parseOpts {} {
 	set pathSep [expr {($::tcl_platform(platform)=="windows") ? ";" : ":"}]
 	set opts(paths) [split $::env(PATH) $pathSep]
     }
-    # Hobbs override for precise testing
-    if {[info exists ::env(SNAME)]} {
-	#set opts(paths) /home/hobbs/install/$env(SNAME)/bin
-    }
 }
 
 #
@@ -313,8 +309,7 @@ proc collectData {iArray dArray oArray fileList} {
 	package require Tclx
     }
     if {$opts(repeat)} {
-	vputs stdout "REPEATING $opts(repeat) $opts(ccmd)"
-	if {$opts(autoscale)} {
+	if {$opts(repeat) < 3 && $opts(autoscale)} {
 	    # We'll waste one run not autoscaled to get good elapsed time
 	    incr opts(repeat)
 	}
@@ -405,6 +400,12 @@ proc collectData {iArray dArray oArray fileList} {
 		}
 	    }
 	    catch { unset tmp(Sourcing) }
+	    if {$opts(autoscale) != $auto} {
+		# Toss data where autoscale is tweaked (e.g. if we are
+		# repeating, this is the first run, and it is not autoscaled)
+		unset tmp
+		continue
+	    }
 	    foreach desc [array names tmp] {
 		set DATA(desc:${desc}) {}
 		set key :$desc$label ; set val $tmp($desc)
