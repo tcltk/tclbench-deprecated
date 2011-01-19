@@ -1,0 +1,12 @@
+# -*- tcl -*-
+# Benchmark format command
+#
+# RCS: @(#) $Id$
+#
+
+proc genKeys {i} {
+    format "%06d" $i
+}
+
+bench -desc "FORMAT gen" \
+	-body {genKeys 50}
