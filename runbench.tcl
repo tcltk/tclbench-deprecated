@@ -169,7 +169,7 @@ proc parseOpts {} {
 		    # Support single dir path or multiple paths as a list
 		    if {[file isdir $val]} { set val [list $val] }
 		    foreach path $val {
-			if {[file isdir $val]} { lappend opts(paths) $path }
+			if {[file isdir $path]} { lappend opts(paths) $path }
 		    }
 		}
 		-v*	{
@@ -195,8 +195,8 @@ proc parseOpts {} {
 	}
     }
     if {[llength $opts(tcllist)] == 0 && [llength $opts(tklist)] == 0} {
-	set opts(tcllist) [lsort [glob $MYDIR/tcl/*.bench]]
-	set opts(tklist)  [lsort [glob $MYDIR/tk/*.bench]]
+	set opts(tcllist) [lsort [glob $::MYDIR/tcl/*.bench]]
+	set opts(tklist)  [lsort [glob $::MYDIR/tk/*.bench]]
     }
 
     #
